@@ -12,5 +12,9 @@ class ChatApplicationTest {
 	@Test
 	void contextLoads() {
 	}
+	
+	@Test
+	void test{
+	}
 
 }
