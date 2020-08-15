@@ -10,6 +10,6 @@ public class NotFoundException extends RuntimeException {
 
 	@Override
 	public String getMessage() {
-		return String.format("%s does not exits.", id);
+		return String.format("%s does not exist.", id);
 	}
 }
