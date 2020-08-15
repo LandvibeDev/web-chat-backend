@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/apps/h2db/crm:webchat;AUTO_SERVER=TRUE
+    username: sa
+    password: sa
+    sql-script-encoding: UTF-8
+    initialization-mode: never
+  jpa:
+    database: h2
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
