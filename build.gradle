@@ -23,6 +23,7 @@ ext {
     swaggerVersion = '2.9.2'
     sockjsClientVersion = '1.0.2'
     StompWebSocketVersion = '2.3.3'
+    h2DatabaseVersion = '1.4.199'
 }
 
 dependencies {
@@ -39,7 +40,7 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-    runtimeOnly 'com.h2database:h2'
+    runtimeOnly "com.h2database:h2:${h2DatabaseVersion}"
     runtimeOnly 'mysql:mysql-connector-java'
 
     compileOnly 'org.projectlombok:lombok'
