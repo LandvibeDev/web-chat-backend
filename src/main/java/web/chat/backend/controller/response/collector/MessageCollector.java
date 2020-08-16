@@ -34,16 +34,7 @@ public class MessageCollector implements Collector<Message, List<MessageResponse
 
 	@Override
 	public BiConsumer<List<MessageResponse>, Message> accumulator() {
-		return (list, message) -> {
-			MessageResponse messageResponse = MessageResponse.builder()
-				.id(message.getId())
-				.contents(message.getContents())
-				.createdAt(message.getCreatedAt())
-				.messageType(message.getMessageType())
-				.build();
-
-			list.add(messageResponse);
-		};
+		return (list, message) -> list.add(new MessageResponse(message));
 	}
 
 	@Override
