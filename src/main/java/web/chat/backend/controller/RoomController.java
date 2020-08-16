@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import web.chat.backend.controller.response.MessageResponse;
+import web.chat.backend.controller.response.collector.MessageCollector;
+import web.chat.backend.entity.Message;
 import web.chat.backend.service.MessageService;
 
 @RestController
@@ -22,6 +24,7 @@ public class RoomController {
 	@GetMapping(value = "/{id}/messages")
 	@ResponseStatus(HttpStatus.OK)
 	public List<MessageResponse> getMessages(@PathVariable Long id) {
-		return messageService.getMessagesBy(id);
+		List<Message> messages = messageService.getMessagesBy(id);
+		return messages.stream().collect(new MessageCollector());
 	}
 }
