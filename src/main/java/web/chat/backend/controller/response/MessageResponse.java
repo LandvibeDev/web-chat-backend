@@ -2,8 +2,8 @@ package web.chat.backend.controller.response;
 
 import java.time.LocalDateTime;
 
-import lombok.Builder;
 import lombok.Getter;
+import web.chat.backend.entity.Message;
 import web.chat.backend.entity.MessageType;
 
 @Getter
@@ -16,11 +16,10 @@ public class MessageResponse {
 
 	private MessageType messageType;
 
-	@Builder
-	protected MessageResponse(Long id, String contents, LocalDateTime createdAt, MessageType messageType) {
-		this.id = id;
-		this.contents = contents;
-		this.createdAt = createdAt;
-		this.messageType = messageType;
+	public MessageResponse(Message message) {
+		this.id = message.getId();
+		this.contents = message.getContents();
+		this.createdAt = message.getCreatedAt();
+		this.messageType = message.getMessageType();
 	}
 }
