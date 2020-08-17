@@ -1,11 +1,12 @@
 package web.chat.backend.controller.response;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class RoomResponse {
-	private Long id;
-	private String title;
+public class RoomsResponse {
+	List<RoomResponse> rooms;
 }
