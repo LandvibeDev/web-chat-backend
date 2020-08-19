@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://host.docker.internal:3306/webchat?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: webchat
+    password: webchat
+    sql-script-encoding: UTF-8
+    initialization-mode: always
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+      format-sql: true
