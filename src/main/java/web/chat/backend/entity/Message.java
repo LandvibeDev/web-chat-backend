@@ -9,6 +9,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -34,4 +36,8 @@ public class Message {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "message_type", nullable = false)
 	private MessageType messageType = MessageType.TEXT;
+
+	@ManyToOne
+	@JoinColumn(name = "room_id")
+	private Room room;
 }
