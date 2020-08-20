@@ -1,7 +1,7 @@
 package web.chat.backend.controller;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,13 +32,9 @@ public class RoomController {
 	@ResponseStatus(HttpStatus.OK)
 	public RoomsResponse getRooms() {
 		List<Room> rooms = roomService.getRooms();
-		List<RoomResponse> roomResponseList = new ArrayList<>();
-		for (int i = 0; i < rooms.size(); i++) {
-			RoomResponse roomResponse = new RoomResponse();
-			roomResponse.setId(rooms.get(i).getId());
-			roomResponse.setTitle((rooms.get(i).getTitle()));
-			roomResponseList.add(roomResponse);
-		}
+		List<RoomResponse> roomResponseList = rooms.stream()
+			.map(RoomResponse::create)
+			.collect(Collectors.toList());
 		RoomsResponse roomsResponse = new RoomsResponse();
 		roomsResponse.setRooms(roomResponseList);
 		return roomsResponse;
@@ -50,5 +46,5 @@ public class RoomController {
 		List<Message> messages = messageService.getMessagesBy(id);
 		return messages.stream().collect(new MessageCollector());
 	}
-	
+
 }
