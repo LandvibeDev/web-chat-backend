@@ -3,14 +3,19 @@ package web.chat.backend.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import web.chat.backend.controller.request.RoomRequest;
 import web.chat.backend.controller.response.MessageResponse;
 import web.chat.backend.controller.response.RoomResponse;
 import web.chat.backend.controller.response.RoomsResponse;
@@ -45,6 +50,15 @@ public class RoomController {
 	public List<MessageResponse> getMessages(@PathVariable Long id) {
 		List<Message> messages = messageService.getMessagesBy(id);
 		return messages.stream().collect(new MessageCollector());
+	}
+
+	@PostMapping("")
+	@ResponseStatus(HttpStatus.CREATED)
+	public RoomResponse createRoom(@RequestBody @Valid RoomRequest roomRequest) {
+		Room room = new Room();
+		room.setId(roomRequest.getId());
+		room.setTitle((roomRequest.getTitle()));
+		return roomService.createRoom(room);
 	}
 
 }

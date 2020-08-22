@@ -1,28 +1,24 @@
 package web.chat.backend.controller.request;
 
-import javax.validation.Valid;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.Size;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.Getter;
+import lombok.Setter;
 
-import lombok.RequiredArgsConstructor;
-import web.chat.backend.entity.Room;
-import web.chat.backend.service.RoomService;
-
-@RestController
-@RequiredArgsConstructor
-@RequestMapping("/api/rooms")
+@Getter
+@Setter
 public class RoomRequest {
-	private final RoomService roomService;
 
-	@PostMapping("")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Room createRoom(@RequestBody @Valid Room room) {
-		return roomService.createRoom(room);
-	}
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(name = "title", nullable = false, length = 20)
+	@Size(min = 2, max = 20)
+	private String title;
 
 }
