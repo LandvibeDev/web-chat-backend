@@ -1,7 +1,7 @@
 name: Web-Chat
 on:
   push:
-    branches: [  master ]
+    branches: [ master ]
   release:
     type: [ published ]
 jobs:
@@ -39,7 +39,7 @@ jobs:
           ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg url=${{ secrets.AWS_RDS_URL }} --build-arg username=${{ secrets.AWS_RDS_USERNAME }} --build-arg password=${{ secrets.AWS_RDS_PASSWORD }} .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
@@ -55,6 +55,6 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ secrets.AWS_ECS_SERVICE }}
+          service: ${{ secrets.AWS_ECS_WEBCHAT_SERVICE }}
           cluster: ${{ secrets.AWS_ECS_CLUSTER }}
           wait-for-service-stability: true
