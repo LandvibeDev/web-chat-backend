@@ -56,9 +56,12 @@ public class RoomController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public RoomResponse createRoom(@RequestBody @Valid RoomRequest roomRequest) {
 		Room room = new Room();
-		room.setId(roomRequest.getId());
 		room.setTitle((roomRequest.getTitle()));
-		return roomService.createRoom(room);
+		Room savedRoom = roomService.createRoom(room);
+		RoomResponse roomResponse = new RoomResponse();
+		roomResponse.setId(savedRoom.getId());
+		roomResponse.setTitle(savedRoom.getTitle());
+		return roomResponse;
 	}
 
 }
