@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Size;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class Room {
 	private Long id;
 
 	@Column(name = "title", nullable = false, length = 20)
+	@Size(min = 2, max = 20)
 	private String title;
 
 }
