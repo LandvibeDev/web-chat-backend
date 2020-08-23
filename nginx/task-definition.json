@@ -25,6 +25,11 @@
           "readOnly": null,
           "containerPath": "/front",
           "sourceVolume": "front"
+        },
+        {
+          "readOnly": null,
+          "containerPath": "/logs",
+          "sourceVolume": "logs"
         }
       ],
       "workingDirectory": null,
@@ -88,6 +93,21 @@
         "rootDirectory": "/"
       },
       "name": "front",
+      "host": null,
+      "dockerVolumeConfiguration": null
+    },
+    {
+      "efsVolumeConfiguration": {
+        "transitEncryptionPort": null,
+        "fileSystemId": "fs-cac2c4ab",
+        "authorizationConfig": {
+          "iam": "DISABLED",
+          "accessPointId": "fsap-066c4a71e5c166631"
+        },
+        "transitEncryption": "ENABLED",
+        "rootDirectory": "/"
+      },
+      "name": "logs",
       "host": null,
       "dockerVolumeConfiguration": null
     }
