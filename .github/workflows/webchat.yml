@@ -1,4 +1,4 @@
-name: Web-Chat
+name: webchat
 on:
   push:
     branches: [ master ]
