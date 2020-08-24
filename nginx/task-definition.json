@@ -1,0 +1,116 @@
+{
+  "ipcMode": null,
+  "executionRoleArn": "ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "dnsSearchDomains": null,
+      "logConfiguration": null,
+      "entryPoint": null,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "protocol": "tcp",
+          "containerPort": 80
+        }
+      ],
+      "command": null,
+      "linuxParameters": null,
+      "cpu": 0,
+      "environment": null,
+      "resourceRequirements": null,
+      "ulimits": null,
+      "dnsServers": null,
+      "mountPoints": [
+        {
+          "readOnly": null,
+          "containerPath": "/front",
+          "sourceVolume": "front"
+        },
+        {
+          "readOnly": null,
+          "containerPath": "/logs",
+          "sourceVolume": "logs"
+        }
+      ],
+      "workingDirectory": null,
+      "secrets": null,
+      "dockerSecurityOptions": null,
+      "memory": 128,
+      "volumesFrom": null,
+      "stopTimeout": 30,
+      "image": null,
+      "startTimeout": 180,
+      "firelensConfiguration": null,
+      "dependsOn": null,
+      "disableNetworking": false,
+      "interactive": null,
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "curl -f http://localhost/health || exit 1"
+        ],
+        "interval": 300,
+        "timeout": 5,
+        "retries": 3
+      },
+      "essential": true,
+      "links": [],
+      "hostname": null,
+      "extraHosts": null,
+      "pseudoTerminal": null,
+      "user": null,
+      "readonlyRootFilesystem": null,
+      "dockerLabels": null,
+      "systemControls": null,
+      "privileged": null,
+      "name": "nginx",
+      "repositoryCredentials": {
+        "credentialsParameter": ""
+      }
+    }
+  ],
+  "memory": "512",
+  "taskRoleArn": "ecsTaskExecutionRole",
+  "family": "nginx",
+  "pidMode": null,
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "networkMode": "awsvpc",
+  "cpu": "256",
+  "inferenceAccelerators": [],
+  "proxyConfiguration": null,
+  "volumes": [
+    {
+      "efsVolumeConfiguration": {
+        "transitEncryptionPort": null,
+        "fileSystemId": "fs-cac2c4ab",
+        "authorizationConfig": {
+          "iam": "DISABLED",
+          "accessPointId": "fsap-08273271435023193"
+        },
+        "transitEncryption": "ENABLED",
+        "rootDirectory": "/"
+      },
+      "name": "front",
+      "host": null,
+      "dockerVolumeConfiguration": null
+    },
+    {
+      "efsVolumeConfiguration": {
+        "transitEncryptionPort": null,
+        "fileSystemId": "fs-cac2c4ab",
+        "authorizationConfig": {
+          "iam": "DISABLED",
+          "accessPointId": "fsap-066c4a71e5c166631"
+        },
+        "transitEncryption": "ENABLED",
+        "rootDirectory": "/"
+      },
+      "name": "logs",
+      "host": null,
+      "dockerVolumeConfiguration": null
+    }
+  ],
+  "tags": []
+}
