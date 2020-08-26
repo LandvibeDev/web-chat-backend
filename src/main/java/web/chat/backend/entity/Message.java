@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +29,7 @@ public class Message {
 	@Column(name = "contents", nullable = false, columnDefinition = "TEXT")
 	private String contents;
 
-	@CreationTimestamp
+	@CreatedDate
 	@Column(name = "created_at")
 	private LocalDateTime createdAt;
 

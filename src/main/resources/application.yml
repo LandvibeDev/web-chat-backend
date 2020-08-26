@@ -15,4 +15,4 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-      format-sql: true
+        format_sql: true
