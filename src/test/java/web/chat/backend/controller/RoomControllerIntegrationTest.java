@@ -17,10 +17,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 import web.chat.backend.exception.NotFoundException;
 
@@ -32,10 +34,9 @@ import web.chat.backend.exception.NotFoundException;
 @RequiredArgsConstructor
 @SpringBootTest
 class RoomControllerIntegrationTest {
-	MockMvc mockMvc;
 	final ObjectMapper objectMapper;
-
 	final RoomController roomController;
+	MockMvc mockMvc;
 
 	@BeforeEach
 	void setup() {
@@ -75,8 +76,11 @@ class RoomControllerIntegrationTest {
 	void getRooms() throws Exception {
 
 		// when
+		ResultActions resultActions = mockMvc.perform(get("/api/rooms"));
 
 		// then
+		resultActions.andExpect(status().isOk())
+			.andDo(print());
 	}
 
 	@Test
