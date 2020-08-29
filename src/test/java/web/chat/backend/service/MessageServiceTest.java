@@ -68,8 +68,6 @@ class MessageServiceTest {
 		// then
 		assertEquals(3, messages.size());
 		assertIterableEquals(givenMessages, messages);
-		then(messageRepository).should(times(1)).existsByRoomId(roomId);
-		then(messageRepository).should(times(1)).findAllByRoomId(roomId);
 	}
 
 	@DisplayName("Room 존재하는 경우 Room ID = 1 으로 메시드를 한 번씩 호출")
