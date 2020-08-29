@@ -2,6 +2,7 @@ package web.chat.backend.controller;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -21,9 +22,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import lombok.RequiredArgsConstructor;
+import web.chat.backend.controller.request.MessageRequest;
 import web.chat.backend.controller.request.RoomRequest;
+import web.chat.backend.entity.Message;
 import web.chat.backend.entity.Room;
 import web.chat.backend.service.MessageService;
 import web.chat.backend.service.RoomService;
@@ -116,6 +118,58 @@ class RoomControllerTest {
 		resultActions.andExpect(status().is4xxClientError())
 			.andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException))
 			.andDo(print());
+
+	}
+
+	@Test
+	void createMessage() throws Exception {
+
+		// given
+		MessageRequest req = new MessageRequest();
+		req.setContents("hi hello");
+
+		final String body = objectMapper.writeValueAsString(req);
+
+		Message expected = new Message();
+		expected.setId(1L);
+		expected.setContents(req.getContents());
+
+		given(roomService.getOrThrow(anyLong())).willReturn(new Room());
+		given(messageService.createMessage(any(), any())).willReturn(expected);
+
+		// when
+		ResultActions action = mockMvc.perform(
+			post("/api/rooms/1/messages")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(body));
+
+		// then
+		action.andDo(print())
+			.andExpect(status().isCreated())
+			.andExpect(jsonPath("$.id").value(expected.getId()))
+			.andExpect(jsonPath("$.contents").value(expected.getContents()));
+	}
+
+	@DisplayName("Message 의 contents 빈값 불가능")
+	@Test
+	void createMessage_contentsLengthLessThan_1() throws Exception {
+
+		// given
+		MessageRequest req = new MessageRequest();
+		req.setContents("");
+
+		final String body = objectMapper.writeValueAsString(req);
+
+		// when
+		ResultActions action = mockMvc.perform(
+			post("/api/rooms/1/messages")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(body));
+
+		// then
+		action.andDo(print())
+			.andExpect(status().is4xxClientError())
+			.andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
 
 	}
 }
