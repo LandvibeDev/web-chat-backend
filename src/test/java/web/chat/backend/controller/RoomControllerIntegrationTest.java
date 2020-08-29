@@ -78,8 +78,11 @@ class RoomControllerIntegrationTest {
 	void getRooms() throws Exception {
 
 		// when
+		ResultActions resultActions = mockMvc.perform(get("/api/rooms"));
 
 		// then
+		resultActions.andExpect(status().isOk())
+			.andDo(print());
 	}
 
 	@Test
