@@ -3,7 +3,6 @@ package web.chat.backend.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -53,12 +52,10 @@ class MessageServiceTest {
 		Long roomId = 1L;
 		given(messageRepository.existsByRoomId(roomId)).willReturn(true);
 
-		LocalDateTime now = LocalDateTime.now();
 		List<Message> givenMessages = Stream.of(1, 2, 3).map((id) -> {
 			Message message = new Message();
 			message.setId((long)id);
 			message.setContents("contents_" + id);
-			message.setCreatedAt(now.plusDays(id));
 			message.setMessageType(MessageType.TEXT);
 			return message;
 		}).collect(Collectors.toList());
