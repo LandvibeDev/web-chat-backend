@@ -14,14 +14,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
+import web.chat.backend.controller.request.RoomRequest;
 import web.chat.backend.exception.NotFoundException;
 
 /**
@@ -32,10 +36,9 @@ import web.chat.backend.exception.NotFoundException;
 @RequiredArgsConstructor
 @SpringBootTest
 class RoomControllerIntegrationTest {
-	MockMvc mockMvc;
 	final ObjectMapper objectMapper;
-
 	final RoomController roomController;
+	MockMvc mockMvc;
 
 	@BeforeEach
 	void setup() {
@@ -82,8 +85,20 @@ class RoomControllerIntegrationTest {
 	@Test
 	void createRoom() throws Exception {
 
+		RoomRequest req = new RoomRequest();
+		req.setTitle("title");
+
+		final String body = objectMapper.writeValueAsString(req);
+
 		// when
+		ResultActions action = mockMvc.perform(
+			post("/api/rooms")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(body));
 
 		// then
+		action.andExpect(status().isCreated())
+			.andDo(print());
+
 	}
 }
