@@ -51,9 +51,9 @@ class RoomControllerIntegrationTest {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.*", not(empty())))
 			.andExpect(jsonPath("$.*", hasSize(1)))
-			.andExpect(jsonPath("$[0].id", is(1)))
-			.andExpect(jsonPath("$[0].contents", is("foo")))
-			.andExpect(jsonPath("$[0].messageType", is("TEXT")))
+			.andExpect(jsonPath("$.messages[0].id", is(1)))
+			.andExpect(jsonPath("$.messages[0].contents", is("foo")))
+			.andExpect(jsonPath("$.messages[0].messageType", is("TEXT")))
 			.andDo(print());
 	}
 
@@ -63,7 +63,7 @@ class RoomControllerIntegrationTest {
 		mockMvc.perform(get("/api/rooms/{id}/messages", 100))
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$", empty()));
+			.andExpect(jsonPath("$.messages", empty()));
 	}
 
 	@Test
