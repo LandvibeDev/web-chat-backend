@@ -38,13 +38,13 @@ class RoomControllerIntegrationTest {
 	@DisplayName("ID가 1인 채팅방의 메시지 리스트가 조회되야만 한다")
 	void shouldGetMessageList_inRoomIdWith1() throws Exception {
 		mockMvc.perform(get("/api/rooms/{id}/messages", 1))
+			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.*", not(empty())))
 			.andExpect(jsonPath("$.*", hasSize(1)))
 			.andExpect(jsonPath("$.messages[0].id", is(1)))
 			.andExpect(jsonPath("$.messages[0].contents", is("foo")))
-			.andExpect(jsonPath("$.messages[0].messageType", is("TEXT")))
-			.andDo(print());
+			.andExpect(jsonPath("$.messages[0].messageType", is("TEXT")));
 	}
 
 	@Test
@@ -63,8 +63,9 @@ class RoomControllerIntegrationTest {
 		ResultActions resultActions = mockMvc.perform(get("/api/rooms"));
 
 		// then
-		resultActions.andExpect(status().isOk())
-			.andDo(print());
+		resultActions
+			.andDo(print())
+			.andExpect(status().isOk());
 	}
 
 	@Test
@@ -82,8 +83,8 @@ class RoomControllerIntegrationTest {
 				.content(body));
 
 		// then
-		action.andExpect(status().isCreated())
-			.andDo(print());
-
+		action
+			.andDo(print())
+			.andExpect(status().isCreated());
 	}
 }

@@ -1,15 +1,13 @@
 package web.chat.backend.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +23,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 import web.chat.backend.controller.request.MessageRequest;
 import web.chat.backend.controller.request.RoomRequest;
@@ -72,13 +71,14 @@ class RoomControllerTest {
 		ResultActions resultActions = mockMvc.perform(get("/api/rooms"));
 
 		// then
-		resultActions.andExpect(status().isOk())
+		resultActions
+			.andDo(print())
+			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.rooms", not(empty())))
 			.andExpect(jsonPath("$.rooms", hasSize(3)))
 			.andExpect(jsonPath("$.rooms[0].id", is(1)))
 			.andExpect(jsonPath("$.rooms[1].id", is(2)))
-			.andExpect(jsonPath("$.rooms[2].id", is(3)))
-			.andDo(print());
+			.andExpect(jsonPath("$.rooms[2].id", is(3)));
 	}
 
 	@Test
@@ -105,9 +105,10 @@ class RoomControllerTest {
 				.content(body));
 
 		// then
-		action.andExpect(status().isCreated())
-			.andExpect(content().string(expected))
-			.andDo(print());
+		action
+			.andDo(print())
+			.andExpect(status().isCreated())
+			.andExpect(content().string(expected));
 	}
 
 	@DisplayName("Room의 title 길이 2미만 불가능")
@@ -126,9 +127,10 @@ class RoomControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(body));
 		// then
-		action.andExpect(status().is4xxClientError())
-			.andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException))
-			.andDo(print());
+		action
+			.andDo(print())
+			.andExpect(status().is4xxClientError())
+			.andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
 	}
 
 	@DisplayName("Room의 title 길이 20초과 불가능")
@@ -148,9 +150,10 @@ class RoomControllerTest {
 				.content(body));
 
 		// then
-		resultActions.andExpect(status().is4xxClientError())
-			.andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException))
-			.andDo(print());
+		resultActions
+			.andDo(print())
+			.andExpect(status().is4xxClientError())
+			.andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
 
 	}
 
