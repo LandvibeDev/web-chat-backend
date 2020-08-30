@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import web.chat.backend.controller.request.MessageRequest;
 import web.chat.backend.controller.request.RoomRequest;
 import web.chat.backend.controller.response.MessageResponse;
 import web.chat.backend.controller.response.RoomResponse;
@@ -50,6 +51,19 @@ public class RoomController {
 	public List<MessageResponse> getMessages(@PathVariable Long id) {
 		List<Message> messages = messageService.getMessagesBy(id);
 		return messages.stream().collect(new MessageCollector());
+	}
+
+	@PostMapping("/{roomId}/messages")
+	@ResponseStatus(HttpStatus.CREATED)
+	public MessageResponse createMessage(@PathVariable Long roomId, @RequestBody @Valid MessageRequest messageRequest) {
+		Message message = new Message();
+		message.setContents(messageRequest.getContents());
+
+		Room room = roomService.getOrThrow(roomId);
+
+		Message savedMessage = messageService.createMessage(room, message);
+
+		return new MessageResponse(savedMessage);
 	}
 
 	@PostMapping("")
