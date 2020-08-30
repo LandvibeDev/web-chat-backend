@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import web.chat.backend.controller.response.MessageResponse;
+import web.chat.backend.controller.response.MessagesResponse;
 import web.chat.backend.entity.Message;
 
 /**
@@ -25,7 +26,7 @@ import web.chat.backend.entity.Message;
  * reference by : https://blog.indrek.io/articles/creating-a-collector-in-java-8/
  */
 
-public class MessageCollector implements Collector<Message, List<MessageResponse>, List<MessageResponse>> {
+public class MessageCollector implements Collector<Message, List<MessageResponse>, MessagesResponse> {
 
 	@Override
 	public Supplier<List<MessageResponse>> supplier() {
@@ -46,12 +47,12 @@ public class MessageCollector implements Collector<Message, List<MessageResponse
 	}
 
 	@Override
-	public Function<List<MessageResponse>, List<MessageResponse>> finisher() {
-		return Function.identity();
+	public Function<List<MessageResponse>, MessagesResponse> finisher() {
+		return MessagesResponse::new;
 	}
 
 	@Override
 	public Set<Characteristics> characteristics() {
-		return Collections.unmodifiableSet(EnumSet.of(IDENTITY_FINISH));
+		return Collections.unmodifiableSet(EnumSet.of(CONCURRENT));
 	}
 }

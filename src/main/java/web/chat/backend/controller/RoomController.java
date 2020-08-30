@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import web.chat.backend.controller.request.MessageRequest;
 import web.chat.backend.controller.request.RoomRequest;
 import web.chat.backend.controller.response.MessageResponse;
+import web.chat.backend.controller.response.MessagesResponse;
 import web.chat.backend.controller.response.RoomResponse;
 import web.chat.backend.controller.response.RoomsResponse;
 import web.chat.backend.controller.response.collector.MessageCollector;
@@ -48,7 +49,7 @@ public class RoomController {
 
 	@GetMapping(value = "/{id}/messages")
 	@ResponseStatus(HttpStatus.OK)
-	public List<MessageResponse> getMessages(@PathVariable Long id) {
+	public MessagesResponse getMessages(@PathVariable Long id) {
 		List<Message> messages = messageService.getMessagesBy(id);
 		return messages.stream().collect(new MessageCollector());
 	}
