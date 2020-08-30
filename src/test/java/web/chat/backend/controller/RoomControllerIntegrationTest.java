@@ -5,17 +5,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -29,19 +27,11 @@ import web.chat.backend.controller.request.RoomRequest;
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @RequiredArgsConstructor
 @SpringBootTest
+@AutoConfigureMockMvc
 class RoomControllerIntegrationTest {
 	final ObjectMapper objectMapper;
 	final RoomController roomController;
-	private MockMvc mockMvc;
-
-	@BeforeEach
-	void setup() {
-		mockMvc = MockMvcBuilders
-			.standaloneSetup(roomController)
-			.setControllerAdvice(new ExceptionController())
-			.addFilters(new CharacterEncodingFilter("UTF-8", true))
-			.build();
-	}
+	final MockMvc mockMvc;
 
 	@Test
 	@Sql("/test-sql/messages.sql")
