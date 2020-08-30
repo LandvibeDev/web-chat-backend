@@ -1,6 +1,6 @@
 package web.chat.backend.repository;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,22 +37,24 @@ class MessageRepositoryTest {
 		Room room = new Room();
 		room.setTitle("spring study");
 
-		Room savedRoom = entityManager.persist(room);
+		Room givenRoom = entityManager.persist(room);
 
-		List<Message> savedMessages = Stream.of(1, 2, 3)
+		List<Message> givenMessages = Stream.of(1, 2, 3)
 			.map((id) -> {
 				Message message = new Message();
 				message.setContents("contents_" + id);
 				message.setMessageType(MessageType.TEXT);
-				message.setRoom(savedRoom);
+				message.setRoom(givenRoom);
 				return entityManager.persist(message);
 			}).collect(Collectors.toList());
 
 		// when
-		List<Message> messages = messageRepository.findAllByRoomId(savedRoom.getId());
+		List<Message> messages = messageRepository.findAllByRoomId(givenRoom.getId());
 
 		// then
-		assertEquals(savedMessages.size(), messages.size());
-		assertIterableEquals(savedMessages, messages);
+		assertThat(messages)
+			.hasSameSizeAs(givenMessages)
+			.usingRecursiveComparison()
+			.isEqualTo(givenMessages);
 	}
 }

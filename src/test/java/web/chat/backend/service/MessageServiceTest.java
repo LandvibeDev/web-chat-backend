@@ -1,6 +1,6 @@
 package web.chat.backend.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.util.List;
@@ -42,7 +42,10 @@ class MessageServiceTest {
 		given(messageRepository.existsByRoomId(roomId)).willReturn(false);
 
 		// when, then
-		assertThrows(NotFoundException.class, () -> messageService.getMessagesBy(roomId));
+		assertThatExceptionOfType(NotFoundException.class)
+			.isThrownBy(() -> messageService.getMessagesBy(roomId))
+			.withMessage("%d does not exist.", roomId)
+			.withNoCause();
 	}
 
 	@DisplayName("Room 존재하는 경우 메시지 리스트 반환")
@@ -66,8 +69,10 @@ class MessageServiceTest {
 		List<Message> messages = messageService.getMessagesBy(roomId);
 
 		// then
-		assertEquals(3, messages.size());
-		assertIterableEquals(givenMessages, messages);
+		assertThat(messages)
+			.hasSameSizeAs(givenMessages)
+			.usingRecursiveComparison()
+			.isEqualTo(givenMessages);
 	}
 
 	@DisplayName("Room 존재하는 경우 Room ID = 1 으로 메시드를 한 번씩 호출")
