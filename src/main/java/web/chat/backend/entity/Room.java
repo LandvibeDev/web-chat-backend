@@ -20,6 +20,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Builder
+
 public class Room {
 
 	@Id
