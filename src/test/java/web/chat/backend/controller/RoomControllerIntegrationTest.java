@@ -1,14 +1,9 @@
 package web.chat.backend.controller;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.util.Objects;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +21,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import web.chat.backend.controller.request.RoomRequest;
-import web.chat.backend.exception.NotFoundException;
 
 /**
  * Created by koseungbin on 2020-08-15
@@ -38,7 +32,7 @@ import web.chat.backend.exception.NotFoundException;
 class RoomControllerIntegrationTest {
 	final ObjectMapper objectMapper;
 	final RoomController roomController;
-	MockMvc mockMvc;
+	private MockMvc mockMvc;
 
 	@BeforeEach
 	void setup() {
@@ -64,14 +58,12 @@ class RoomControllerIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("존재하지 않은 채팅방을 요청한 경우에는 400 응답코드를 반환해야만 한다")
+	@DisplayName("채팅방에 메시지가 하나도 없는 경우 빈 메시지 리스트를 반환해야만 한다")
 	void shouldRespond400StatusCode_ifNotFoundRoom() throws Exception {
 		mockMvc.perform(get("/api/rooms/{id}/messages", 100))
-			.andExpect(status().isBadRequest())
-			.andExpect(result -> assertThat(result.getResolvedException() instanceof NotFoundException).isTrue())
-			.andExpect(result -> assertEquals(Objects.requireNonNull(result.getResolvedException()).getMessage(),
-				"100 does not exist."))
-			.andDo(print());
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", empty()));
 	}
 
 	@Test
