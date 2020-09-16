@@ -1,6 +1,8 @@
 # web-chat-backend
 API server for web chat
 
+![](assets/web-chat.gif)
+
 ## how to run it
 
 ### 1. install openjdk11
